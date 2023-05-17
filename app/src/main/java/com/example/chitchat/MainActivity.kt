@@ -11,8 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.chitchat.ui.theme.ChitChatTheme
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : ComponentActivity() {
+
+    val db = Firebase.firestore;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -23,6 +27,8 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+
     }
 }
 
