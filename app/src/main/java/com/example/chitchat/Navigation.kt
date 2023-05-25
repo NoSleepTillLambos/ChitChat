@@ -5,6 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.chitchat.screens.LoginScreen
+import com.example.chitchat.screens.RegisterScreen
 
 
 enum class AuthRoutes {
@@ -15,18 +17,36 @@ enum class AuthRoutes {
 @Composable
 fun Navigation(navController: NavHostController = rememberNavController()) {
 
-    // identifying our navhost and use our navcontroller
+    // identifying our navhost and should use navcontroller
     NavHost (
         navController = navController,
         startDestination = AuthRoutes.Login.name
             ){
         composable(route = AuthRoutes.Login.name) {
             // my login screen
-//            Login()
+            LoginScreen(
+                navToRegister = {
+                    navController.navigate(AuthRoutes.Register.name
+                    ) {
+                        launchSingleTop = true
+                        popUpTo(route = AuthRoutes.Login.name) {
+                            inclusive = true
+                        }
+                    }
+                })
         }
         composable(route = AuthRoutes.Register.name) {
             // my register screen
-            Register()
+            RegisterScreen(
+                navToLogin = {
+                    navController.navigate(AuthRoutes.Login.name
+                    ) {
+                        launchSingleTop = true
+                        popUpTo(route = AuthRoutes.Register.name) {
+                            inclusive = true
+                        }
+                    }
+                })
         }
     }
 }
