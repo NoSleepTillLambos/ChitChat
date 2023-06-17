@@ -11,14 +11,15 @@ import androidx.navigation.NavController
 import com.example.chitchat.BottomNavigationItem
 import com.example.chitchat.bottomNavigationMenu
 
+
 @Composable
-fun ConversationsPage(navController: NavController) {
+fun StatusScreen(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = "Chats!!!")
-        bottomNavigationMenu(selectedItem = BottomNavigationItem.CONVERSATIONSPAGE, navController = navController)
+        Text(text = "statuses yaa")
+        bottomNavigationMenu(selectedItem = BottomNavigationItem.STATUSSCREEN, navController = navController)
     }
 }
