@@ -96,6 +96,12 @@ fun RegisterScreen(
                 focus.clearFocus(force = true)
 
                 // getting the view model for auth
+                vm.signUp(
+                    nameState.value.text,
+                    numberState.value.text,
+                    emailState.value.text,
+                    passwordState.value.text
+                )
             },
             modifier = Modifier.padding(8.dp)) {
                 Text(text = "Sign up here")
