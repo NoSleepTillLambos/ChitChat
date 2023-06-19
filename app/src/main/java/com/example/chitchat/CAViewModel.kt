@@ -1,10 +1,11 @@
 package com.example.chitchat
 
-import android.app.usage.UsageEvents
-import android.app.usage.UsageEvents.Event
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
+import com.example.chitchat.data.ChatData
 import com.example.chitchat.data.Events
 import com.example.chitchat.data.USER_IN_COLLECTION
 import com.example.chitchat.data.UserData
@@ -14,6 +15,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Exception
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +30,9 @@ class CAViewModel @Inject constructor(
     val isSignedIn = mutableStateOf(false)
     val usersData = mutableStateOf<UserData?>(null)
 
+
+    val chats = mutableStateOf<List<ChatData>>(listOf())
+    val chatsInProgress = mutableStateOf(false)
     init {
         logOut()
         auth.signOut()
@@ -134,6 +139,10 @@ class CAViewModel @Inject constructor(
         }
     }
 
+    fun updateProfile(name: String, number: String) {
+        createOrUpdateProfile(name = name, number = number)
+    }
+
     private fun getUserData(uid: String) {
         isInProgress.value = true
         db.collection(USER_IN_COLLECTION).document(uid)
@@ -163,4 +172,41 @@ class CAViewModel @Inject constructor(
         popUpNotify.value = Events(message)
         isInProgress.value = false
     }
+
+    private fun uploadingImage(uri: Uri, onSuccess: (Uri) -> Unit) {
+        isInProgress.value = true
+
+
+        val storageRef = storage.reference
+        val uuid = UUID.randomUUID()
+        val imageRef = storageRef.child("image/$uuid")
+        val uploadImage = imageRef.putFile(uri)
+
+        // incase of failure
+        uploadImage
+            .addOnSuccessListener {
+                val result = it.metadata?.reference?.downloadUrl
+                result?.addOnSuccessListener(onSuccess)
+                isInProgress.value = false
+            }
+            .addOnFailureListener {
+                handleException(it)
+            }
+    }
+    fun uploadProfileImage(uri: Uri) {
+        uploadingImage(uri) {
+            createOrUpdateProfile(imageUrl = it.toString())
+        }
+    }
+
+
+    fun addChat(number: String) {
+        if (number.isEmpty() or !number.isDigitsOnly())
+            handleException(customMessage = "Number must only contain digits")
+        else {
+
+        }
+    }
+
+
 }

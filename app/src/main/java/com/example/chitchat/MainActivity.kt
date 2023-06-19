@@ -72,7 +72,7 @@ fun ChitChatNavigation() {
             LoginScreen(navController, vm)
         }
         composable(DestinationScreen.Profile.route) {
-            ProfileScreen(navController = navController)
+            ProfileScreen(vm = vm, navController = navController)
         }
         composable(DestinationScreen.StatusScreen.route) {
             StatusScreen(navController = navController)
@@ -81,7 +81,7 @@ fun ChitChatNavigation() {
             SingleStatus(StatusId = "123")
         }
         composable(DestinationScreen.ConversationPage.route) {
-            ConversationsPage(navController = navController)
+            ConversationsPage(navController = navController, vm = vm)
         }
         composable(DestinationScreen.IndividualChat.route) {
             IndividualChat(chatId = "123")
