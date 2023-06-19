@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -44,4 +46,15 @@ fun notificationMessage(vm: CAViewModel) {
     val notifyMessage = notifyOfState?.getContentOrNull()
     if (!notifyMessage.isNullOrEmpty())
         Toast.makeText(LocalContext.current, notifyMessage, Toast.LENGTH_SHORT).show()
+}
+@Composable
+fun checkIfSignedIn(vm: CAViewModel, navController: NavController) {
+    val isSignedIn = remember { mutableStateOf(false) }
+    val signedIn = vm.isSignedIn.value
+    if (signedIn && !isSignedIn.value) {
+        isSignedIn.value = true
+        navController.navigate(DestinationScreen.Profile.route) {
+            popUpTo(0)
+        }
+    }
 }

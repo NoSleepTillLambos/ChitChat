@@ -5,8 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.chitchat.data.Events
 import com.example.chitchat.data.USER_IN_COLLECTION
+import com.example.chitchat.data.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Exception
@@ -22,9 +24,15 @@ class CAViewModel @Inject constructor(
     val isInProgress = mutableStateOf(false)
     val popUpNotify = mutableStateOf<Events<String>?>(null)
     val isSignedIn = mutableStateOf(false)
+    val usersData = mutableStateOf<UserData?>(null)
 
     init {
-
+        auth.signOut()
+        val currentLoggedInUser = auth.currentUser
+        isSignedIn.value = currentLoggedInUser != null
+        currentLoggedInUser?.uid?.let {uid ->
+            getUserData(uid)
+        }
     }
 
     fun signUp(name: String, number: String, email: String, password: String) {
@@ -41,6 +49,7 @@ class CAViewModel @Inject constructor(
                         .addOnCompleteListener {
                             task -> if (task.isSuccessful) {
                                 isSignedIn.value = true
+                            createOrUpdateProfile(name = name,number = number)
                             // creating the user here
                             } else
                                 handleException(task.exception, "Something went wrong...")
@@ -53,6 +62,86 @@ class CAViewModel @Inject constructor(
             }
             .addOnFailureListener {
                 handleException(it)
+            }
+    }
+
+    fun login(email: String, password: String) {
+        if(email.isEmpty() or password.isEmpty()) {
+            handleException(customMessage = "All fields must be filled i")
+            return
+
+        }
+        isInProgress.value = true
+        auth.signInWithEmailAndPassword(email,password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    isSignedIn.value = true
+                    isInProgress.value = false
+                    auth.currentUser?.uid?.let {
+                        getUserData(it)
+                    }
+                }
+                else
+                    handleException(task.exception, "There was an issue with your email and password, please try again")
+
+            }
+            .addOnFailureListener {
+                handleException(it, "Login failed")
+            }
+    }
+
+    private fun createOrUpdateProfile(
+        name: String? = null,
+        number: String? = null,
+        imageUrl: String? = null
+    ) {
+        val uid = auth.currentUser?.uid
+        val userData = UserData(
+            userId = uid,
+            name = name,
+            number = number,
+            imageUrl = imageUrl
+        )
+
+        uid?.let { uid ->
+            isInProgress.value = true
+            db.collection(USER_IN_COLLECTION).document(uid)
+                .get()
+                .addOnSuccessListener {
+                    if (it.exists()) {
+                        // updating user creds
+                        it.reference.update(userData.toMap())
+                            .addOnSuccessListener {
+                                isInProgress.value = false
+                            }
+                            .addOnFailureListener {
+                                handleException(it, "unable to update user")
+                            }
+                    } else {
+                        // create user as is not in the system
+                        db.collection(USER_IN_COLLECTION).document(uid)
+                            .set(userData)
+                        isInProgress.value = false
+                        getUserData(uid)
+                    }
+                }
+                .addOnFailureListener {
+                    handleException(it, "user cannot be found")
+                }
+        }
+    }
+
+    private fun getUserData(uid: String) {
+        isInProgress.value = true
+        db.collection(USER_IN_COLLECTION).document(uid)
+            .addSnapshotListener { value, error ->
+                if (error != null)
+                    handleException(error, "There has been a problem fetching the user")
+                if (value != null ) {
+                    val user = value.toObject<UserData>()
+                    usersData.value = user
+                    isInProgress.value = false
+                }
             }
     }
 

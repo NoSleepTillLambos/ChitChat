@@ -35,6 +35,7 @@ import com.example.chitchat.CAViewModel
 import com.example.chitchat.DestinationScreen
 import com.example.chitchat.ProgressSpinner
 import com.example.chitchat.R
+import com.example.chitchat.checkIfSignedIn
 import com.example.chitchat.navigateTo
 import com.example.chitchat.ui.theme.ChitChatTheme
 
@@ -44,6 +45,8 @@ fun RegisterScreen(
     navController: NavController,
     vm: CAViewModel,
     modifier: Modifier = Modifier) {
+
+    checkIfSignedIn(vm = vm, navController = navController)
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(modifier = Modifier
