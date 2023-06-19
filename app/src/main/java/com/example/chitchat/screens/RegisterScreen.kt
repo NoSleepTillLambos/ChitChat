@@ -71,7 +71,7 @@ fun RegisterScreen(
                     .padding(top = 16.dp)
                     .padding(8.dp)
             )
-            Text(text = "Sign up below", modifier = Modifier.padding(8.dp), fontSize = 26.sp, fontFamily = FontFamily.Serif)
+            Text(text = "Sign up below", modifier = Modifier.padding(8.dp), fontSize = 18.sp, fontFamily = FontFamily.Serif)
 
             OutlinedTextField(value = nameState.value,
                 onValueChange = {nameState.value = it},

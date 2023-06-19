@@ -1,5 +1,7 @@
 package com.example.chitchat
 
+import android.app.usage.UsageEvents
+import android.app.usage.UsageEvents.Event
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -27,6 +29,7 @@ class CAViewModel @Inject constructor(
     val usersData = mutableStateOf<UserData?>(null)
 
     init {
+        logOut()
         auth.signOut()
         val currentLoggedInUser = auth.currentUser
         isSignedIn.value = currentLoggedInUser != null
@@ -67,7 +70,7 @@ class CAViewModel @Inject constructor(
 
     fun login(email: String, password: String) {
         if(email.isEmpty() or password.isEmpty()) {
-            handleException(customMessage = "All fields must be filled i")
+            handleException(customMessage = "All fields must be filled in")
             return
 
         }
@@ -98,9 +101,9 @@ class CAViewModel @Inject constructor(
         val uid = auth.currentUser?.uid
         val userData = UserData(
             userId = uid,
-            name = name,
-            number = number,
-            imageUrl = imageUrl
+            name = name ?: usersData.value?.name,
+            number = number ?: usersData.value?.number,
+            imageUrl = imageUrl ?: usersData.value?.imageUrl
         )
 
         uid?.let { uid ->
@@ -143,6 +146,13 @@ class CAViewModel @Inject constructor(
                     isInProgress.value = false
                 }
             }
+    }
+
+    fun logOut() {
+        auth.signOut()
+        isSignedIn.value = false
+        usersData.value = null
+        popUpNotify.value = Events("You have been logged out")
     }
 
     private fun handleException(exception: Exception? = null, customMessage: String = "") {

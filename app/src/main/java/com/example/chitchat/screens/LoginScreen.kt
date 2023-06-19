@@ -32,6 +32,7 @@ import com.example.chitchat.CAViewModel
 import com.example.chitchat.DestinationScreen
 import com.example.chitchat.ProgressSpinner
 import com.example.chitchat.R
+import com.example.chitchat.checkIfSignedIn
 import com.example.chitchat.navigateTo
 
 
@@ -42,6 +43,8 @@ fun LoginScreen(
     vm: CAViewModel,
     modifier: Modifier = Modifier
 ) {
+
+    checkIfSignedIn(vm = vm , navController = navController)
     Box(modifier = modifier.fillMaxSize()) {
         Column(modifier = Modifier
             .fillMaxSize()

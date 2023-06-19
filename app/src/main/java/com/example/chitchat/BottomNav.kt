@@ -17,9 +17,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 enum class BottomNavigationItem(val icon: Int, val navDestination: DestinationScreen) {
-    STATUSSCREEN(R.drawable.baseline_update_24, DestinationScreen.StatusScreen),
-    CONVERSATIONSPAGE(R.drawable.chat, DestinationScreen.ConversationPage),
-    PROFILE(R.drawable.profile, DestinationScreen.Profile),
+    STATUSSCREEN(R.drawable.baseline_status, DestinationScreen.StatusScreen),
+    CONVERSATIONSPAGE(R.drawable.baseline_chat, DestinationScreen.ConversationPage),
+    PROFILE(R.drawable.baseline_person_24, DestinationScreen.Profile),
 }
 
 @Composable
