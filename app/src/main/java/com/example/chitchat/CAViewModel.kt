@@ -5,13 +5,17 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
+import com.example.chitchat.data.CHAT_COLLECTION
 import com.example.chitchat.data.ChatData
+import com.example.chitchat.data.ChatUser
 import com.example.chitchat.data.Events
 import com.example.chitchat.data.USER_IN_COLLECTION
 import com.example.chitchat.data.UserData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Exception
@@ -204,9 +208,73 @@ class CAViewModel @Inject constructor(
         if (number.isEmpty() or !number.isDigitsOnly())
             handleException(customMessage = "Number must only contain digits")
         else {
-
+            db.collection(CHAT_COLLECTION)
+                .where(
+                    Filter.or(
+                        Filter.and(
+                            Filter.equalTo("user1.number",number),
+                            Filter.equalTo("user2.number", usersData.value?.number)
+                        ),
+                        Filter.and(
+                            Filter.equalTo("user1.number", usersData.value?.number),
+                            Filter.equalTo("user2.number", number),
+                        )
+                    )
+                )
+                .get()
+                .addOnSuccessListener {
+                    if(it.isEmpty) {
+                        db.collection(USER_IN_COLLECTION).whereEqualTo("number", number)
+                            .get()
+                            .addOnSuccessListener {
+                                if(it.isEmpty)
+                                    handleException(customMessage = "Cannot find $number")
+                                else {
+                                    val chatPartner = it.toObjects<UserData>()[0]
+                                    val chatId = db.collection(CHAT_COLLECTION).document().id
+                                    val chat = ChatData(
+                                        chatId,
+                                        ChatUser(
+                                            usersData.value?.userId,
+                                            usersData.value?.name,
+                                            usersData.value?.imageUrl,
+                                            usersData.value?.number
+                                        ),
+                                        ChatUser(
+                                            chatPartner.userId,
+                                            chatPartner.name,
+                                            chatPartner.imageUrl,
+                                            chatPartner.number
+                                        )
+                                    )
+                                    db.collection(CHAT_COLLECTION).document(chatId).set(chat)
+                                }
+                            }
+                            .addOnFailureListener {
+                                handleException(it)
+                            }
+                    } else {
+                        handleException(customMessage = "You have already created this chat")
+                    }
+                }
         }
     }
 
+    private fun getChats() {
+        chatsInProgress.value = true
+        db.collection(CHAT_COLLECTION).where(
+            Filter.or(
+                Filter.equalTo("user1.userId", usersData.value?.userId),
+                Filter.equalTo("user2.userId", usersData.value?.userId)
+            )
+        )
+            .addSnapshotListener { value, error ->
+                if(error != null)
+                    handleException(error)
+                if (value != null)
+                    chats.value = value.documents.mapNotNull { it.toObject<ChatData>() }
+                isInProgress.value = false
+            }
+    }
 
 }

@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -71,12 +75,18 @@ fun LoginScreen(
             OutlinedTextField(value = emailState.value,
                 onValueChange = {emailState.value = it},
                 modifier.padding(9.dp),
-                label = { Text(text = "Email") }
+                label = { Text(text = "Email") },
+                trailingIcon = {
+                    Icon(imageVector = Icons.Default.Email, contentDescription = null)
+                },
             )
             OutlinedTextField(value = passwordState.value,
                 onValueChange = {passwordState.value = it},
                 modifier.padding(9.dp),
                 label = { Text(text = "Password") },
+                trailingIcon = {
+                    Icon(imageVector = Icons.Default.Star, contentDescription = null)
+                },
                 visualTransformation = PasswordVisualTransformation()
             )
 

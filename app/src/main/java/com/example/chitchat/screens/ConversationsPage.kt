@@ -45,7 +45,10 @@ fun ConversationsPage(navController: NavController, vm: CAViewModel) {
         }
         val onClick: () -> Unit = {showDialog.value = true}
         val onDismiss: () -> Unit = {showDialog.value = false}
-        val onAddChat: (String) -> Unit = {showDialog.value = false}
+        val onAddChat: (String) -> Unit = {
+            vm.addChat(it)
+            showDialog.value = false
+        }
 
         Scaffold(floatingActionButton = {
             FAB(showDialog = showDialog.value,
