@@ -32,7 +32,7 @@ class CAViewModel @Inject constructor(
     val isInProgress = mutableStateOf(false)
     val popUpNotify = mutableStateOf<Events<String>?>(null)
     val isSignedIn = mutableStateOf(false)
-    val usersData = mutableStateOf<UserData?>(null)
+    val userData = mutableStateOf<UserData?>(null)
 
 
     val chats = mutableStateOf<List<ChatData>>(listOf())
@@ -110,9 +110,9 @@ class CAViewModel @Inject constructor(
         val uid = auth.currentUser?.uid
         val userData = UserData(
             userId = uid,
-            name = name ?: usersData.value?.name,
-            number = number ?: usersData.value?.number,
-            imageUrl = imageUrl ?: usersData.value?.imageUrl
+            name = name ?: userData.value?.name,
+            number = number ?: userData.value?.number,
+            imageUrl = imageUrl ?: userData.value?.imageUrl
         )
 
         uid?.let { uid ->
@@ -155,8 +155,9 @@ class CAViewModel @Inject constructor(
                     handleException(error, "There has been a problem fetching the user")
                 if (value != null ) {
                     val user = value.toObject<UserData>()
-                    usersData.value = user
+                    userData.value = user
                     isInProgress.value = false
+                    getChats()
                 }
             }
     }
@@ -164,12 +165,13 @@ class CAViewModel @Inject constructor(
     fun logOut() {
         auth.signOut()
         isSignedIn.value = false
-        usersData.value = null
+        userData.value = null
         popUpNotify.value = Events("You have been logged out")
+        chats.value = listOf()
     }
 
     private fun handleException(exception: Exception? = null, customMessage: String = "") {
-        Log.e("ChITCHAT", " chat except", exception)
+        Log.e("Chitchat", " chat except", exception)
         exception?.printStackTrace()
         val errorMsg = exception?.localizedMessage?: ""
         val message = if (customMessage.isEmpty()) errorMsg else "$customMessage : $errorMsg"
@@ -186,7 +188,7 @@ class CAViewModel @Inject constructor(
         val imageRef = storageRef.child("image/$uuid")
         val uploadImage = imageRef.putFile(uri)
 
-        // incase of failure
+        // in the case of failure
         uploadImage
             .addOnSuccessListener {
                 val result = it.metadata?.reference?.downloadUrl
@@ -213,10 +215,10 @@ class CAViewModel @Inject constructor(
                     Filter.or(
                         Filter.and(
                             Filter.equalTo("user1.number",number),
-                            Filter.equalTo("user2.number", usersData.value?.number)
+                            Filter.equalTo("user2.number", userData.value?.number)
                         ),
                         Filter.and(
-                            Filter.equalTo("user1.number", usersData.value?.number),
+                            Filter.equalTo("user1.number", userData.value?.number),
                             Filter.equalTo("user2.number", number),
                         )
                     )
@@ -231,14 +233,14 @@ class CAViewModel @Inject constructor(
                                     handleException(customMessage = "Cannot find $number")
                                 else {
                                     val chatPartner = it.toObjects<UserData>()[0]
-                                    val chatId = db.collection(CHAT_COLLECTION).document().id
+                                    val id = db.collection(CHAT_COLLECTION).document().id
                                     val chat = ChatData(
-                                        chatId,
+                                        id,
                                         ChatUser(
-                                            usersData.value?.userId,
-                                            usersData.value?.name,
-                                            usersData.value?.imageUrl,
-                                            usersData.value?.number
+                                            userData.value?.userId,
+                                            userData.value?.name,
+                                            userData.value?.imageUrl,
+                                            userData.value?.number
                                         ),
                                         ChatUser(
                                             chatPartner.userId,
@@ -247,7 +249,7 @@ class CAViewModel @Inject constructor(
                                             chatPartner.number
                                         )
                                     )
-                                    db.collection(CHAT_COLLECTION).document(chatId).set(chat)
+                                    db.collection(CHAT_COLLECTION).document(id).set(chat)
                                 }
                             }
                             .addOnFailureListener {
@@ -261,11 +263,11 @@ class CAViewModel @Inject constructor(
     }
 
     private fun getChats() {
-        chatsInProgress.value = true
+        isInProgress.value = true
         db.collection(CHAT_COLLECTION).where(
             Filter.or(
-                Filter.equalTo("user1.userId", usersData.value?.userId),
-                Filter.equalTo("user2.userId", usersData.value?.userId)
+                Filter.equalTo("user1.userId", userData.value?.userId),
+                Filter.equalTo("user2.userId", userData.value?.userId)
             )
         )
             .addSnapshotListener { value, error ->

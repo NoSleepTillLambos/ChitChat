@@ -13,6 +13,6 @@ fun IndividualChat(chatId: String) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Individual $chatId")
+        Text(text = "Individual")
     }
 }

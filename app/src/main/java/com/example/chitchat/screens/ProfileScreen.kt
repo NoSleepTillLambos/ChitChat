@@ -51,7 +51,7 @@ fun ProfileScreen(navController: NavController, vm : CAViewModel) {
         ProgressSpinner()
     else {
 
-        val userData = vm.usersData.value
+        val userData = vm.userData.value
         var name by rememberSaveable { mutableStateOf(userData?.name ?: "") }
         var number by rememberSaveable { mutableStateOf(userData?.number ?: "") }
 
@@ -105,7 +105,7 @@ fun ProfileContent(
     onBack: () -> Unit,
     onLogout: () -> Unit
 ) {
-    val imageUrl = vm.usersData.value?.imageUrl
+    val imageUrl = vm.userData.value?.imageUrl
     // all content for the profile
     Column(modifier = modifier) {
         Row(modifier = Modifier
@@ -125,7 +125,7 @@ fun ProfileContent(
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)) {
-            Text(text = "Your name", modifier = Modifier.width(100.dp))
+            Text(text = "Your name", modifier = Modifier.width(100.dp).padding(6.dp))
             TextField(
                 value = name,
                 onValueChange = onNameChange,
@@ -158,7 +158,7 @@ fun ProfileContent(
             // calling the logout function and sending us to login screen
             Button(onClick = { onLogout.invoke()
             }) {
-                Text(text = "Logout", color = Color.Black)
+                Text(text = "Logout", color = Color.White)
             }
             
         }
@@ -195,7 +195,7 @@ fun ProfileImage(imageUrl: String?, vm: CAViewModel) {
             Card(shape = CircleShape,
             modifier = Modifier
                 .padding(8.dp)
-                .size(200.dp))
+                .size(100.dp))
             {
                 Image(data = imageUrl)
             }

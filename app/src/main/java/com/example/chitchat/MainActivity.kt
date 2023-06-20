@@ -19,7 +19,6 @@ import com.example.chitchat.screens.ProfileScreen
 import com.example.chitchat.screens.RegisterScreen
 import com.example.chitchat.screens.SingleStatus
 import com.example.chitchat.screens.StatusScreen
-
 import com.example.chitchat.ui.theme.ChitChatTheme
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,11 +28,11 @@ sealed class DestinationScreen(val route: String) {
     object Login : DestinationScreen("login")
     object Profile : DestinationScreen("profile")
     object ConversationPage : DestinationScreen("conversationPage")
-    object IndividualChat: DestinationScreen("individualChat/{chatId") {
+    object IndividualChat: DestinationScreen("individualChat/{chatId}") {
         fun createRoute(id: String) = "individualChat/$id"
     }
     object StatusScreen : DestinationScreen("statusScreen")
-    object SingleStatus : DestinationScreen("singleStatus/{statusId") {
+    object SingleStatus : DestinationScreen("singleStatus/{statusId}") {
         fun createRoute(id: String) = "singleStatus/$id"
     }
 }

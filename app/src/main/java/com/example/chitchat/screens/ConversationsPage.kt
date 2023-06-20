@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -22,23 +25,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.chitchat.BottomNavigationItem
 import com.example.chitchat.CAViewModel
+import com.example.chitchat.DestinationScreen
 import com.example.chitchat.ProgressSpinner
+import com.example.chitchat.R
+import com.example.chitchat.RowCommon
 import com.example.chitchat.bottomNavigationMenu
+import com.example.chitchat.navigateTo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConversationsPage(navController: NavController, vm: CAViewModel) {
+    /*var name by rememberSaveable { mutableStateOf(userData?.name ?: "") }
+    var number by rememberSaveable { mutableStateOf(userData?.number ?: "") }
+
+    Text(text = "$name" + "'s Chats")*/
+
     val inProgress  = vm.chatsInProgress.value
     if (inProgress)
         ProgressSpinner()
     else {
         val chats = vm.chats.value
-        val userData = vm.usersData.value
+        val userData = vm.userData.value
 
         val showDialog = remember {
             mutableStateOf(false)
@@ -68,12 +81,29 @@ fun ConversationsPage(navController: NavController, vm: CAViewModel) {
                         .weight(2f),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
-                    ) {
-                        Text("You have no chats, get chatting!")
+                    ) 
+                    {
+                        androidx.compose.foundation.Image(painter = painterResource(id = R.drawable.logo), contentDescription = null, modifier = Modifier.size(30.dp))
+                        Text("You have no chats, get chatting!", modifier = Modifier.padding(7.dp))
                     }
                 else {
                     // chat column
-
+                    LazyColumn(modifier = Modifier.weight(2f)) {
+                        items(chats) {chat ->
+                            val chatUser =
+                                if (chat.user1.userId == userData?.userId) chat.user2
+                                else chat.user1
+                            RowCommon(imageUrl = chatUser.imageUrl ?: "", name = chatUser.name)
+                            {
+                                chat.chatId?.let { id ->
+                                    navigateTo(
+                                        navController,
+                                        DestinationScreen.IndividualChat.createRoute(id)
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
                bottomNavigationMenu(selectedItem = BottomNavigationItem.CONVERSATIONSPAGE,
                    navController = navController)
@@ -114,8 +144,9 @@ fun FAB(
     FloatingActionButton(
         onClick = onClick,
         containerColor = MaterialTheme.colorScheme.secondary,
-    shape = CircleShape,
-    modifier = Modifier.padding(40.dp)) {
+        shape = CircleShape,
+        modifier = Modifier.padding(40.dp))
+    {
         Icon(imageVector = Icons.Rounded.Add, contentDescription = null, )
     }
 }
