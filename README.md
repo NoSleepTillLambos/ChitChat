@@ -74,7 +74,7 @@
 
 ### Project Description
 
-A nice introduction to this amazing project of mine.
+This project was developed for the purpose of a varsity project, it incorporates the simplicity and beauty of jetpack compose, Firebase and Hilt
 
 ### Built With
 
