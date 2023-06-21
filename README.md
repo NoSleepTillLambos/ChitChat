@@ -19,13 +19,13 @@
 <p align="center">
 
   <a href="https://github.com/username/projectname">
-    <img src="path/to/logo" alt="Logo" width="140" height="140">
+    <img src="https://github.com/NoSleepTillLambos/ChitChat/blob/master/app/src/main/res/drawable/logo.png" alt="Logo" width="140" height="140">
   </a>
   
-  <h3 align="center">Project Name</h3>
+  <h3 align="center">ChitChat</h3>
 
   <p align="center">
-    Short Project Slogan / Description <br>
+    A messaging app created using Kotlin, Android Studio and Google Firebase<br>
       <a href="https://github.com/username/projectname"><strong>Explore the docs »</strong></a>
    <br />
    <br />
@@ -170,14 +170,14 @@ The `Development Process` is the technical implementations and functionality don
 ### Implementation Process
 <!-- stipulate all of the functionality you included in the project -->
 
-* Made use of both `functionality` to implement a specific feature.
+* Made use of Hilt for dependency injection for Firebase and database calls.
 * `MVC/MVVM` design architecture implemented.
 * `Plugin` for this.
 * ETC.
 
 #### Highlights
 <!-- stipulated the highlight you experienced with the project -->
-* Sunshine.
+* The biggest highlight was getting the chat features working.
 * Rainbows.
 
 #### Challenges
