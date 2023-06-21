@@ -99,7 +99,7 @@ Here are a couple of ways to clone this repo:
 
 1. Software </br>
 `Android Studio` -> `File` -> `New` -> `From Version Control` -> `Git`</br>
-Enter `https://github.com/username/projectname.git` into the URL field and press the `Clone` button.
+Enter `[https://github.com/username/projectname.git](https://github.com/NoSleepTillLambos/ChitChat)` into the URL field and press the `Clone` button.
 
 2. Clone Repository </br>
 Run the following in the command-line to clone the project:
@@ -114,7 +114,7 @@ Run the following in the command-line to install all the required dependencies:
    npm install
    ```
 
-4. Get a free API Key at [https://example.com](https://example.com) and enter it in the `config.js` file:
+4. Get a free API Key at [[https://example.com](https://example.com)](https://github.com/NoSleepTillLambos/ChitChat) and enter it in the `config.js` file:
    ```js
    const API_KEY = 'ENTER YOUR API';
    ```
@@ -148,20 +148,6 @@ Users are able to type and send messages live, allowign for real time chat and q
 
 The concept was obviously largely around whatsapp, that formed a large part of the ideation for me and helped me gauge where i wanted certain features to be and where i wanted everythign to be lined up
 
-### Ideation
-
-![image5][image5]
-<br>
-![image6][image6]
-
-### Wireframes
-
-![image7][image7]
-
-### User-flow
-
-![image8][image8]
-
 <!-- DEVELOPMENT PROCESS -->
 ## Development Process
 
@@ -189,10 +175,9 @@ when i got it working!
 
 `Peer Reviews` were conducted by my fellow students and lecturer. The following feedback I found useful:
 
-* I started off using the old xml files becuase they made more sense to me but after spending some time with Jetpack compose it proved to be so much simpler
-of this functionality
-
-### Future Implementation
+* I started off using the old xml files becuase they made more sense to me but after spending some time with Jetpack compose it proved to be so much simpler than i expected
+  
+## Future Implementation
 <!-- stipulate functionality and improvements that can be implemented in the future. -->
 
 * In the future i would like to add the ability to send images 
@@ -249,8 +234,8 @@ Distributed under the MIT License. See `LICENSE` for more information.\
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 <!-- all resources that you used and Acknowledgements here -->
-* [Resource Name](path/to/resource)
-* [Resource Name](path/to/resource)
+* [Hilt][(path/to/resource)](https://dagger.dev/hilt/)
+* [Dagger][(path/to/resource)](https://dagger.dev/hilt/)
 * [Resource Name](path/to/resource)
 * [Resource Name](path/to/resource)
 * [Resource Name](path/to/resource)
