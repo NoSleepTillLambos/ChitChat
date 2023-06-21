@@ -3,10 +3,10 @@
 <!-- Repository Information & Links-->
 <br />
 
-![GitHub repo size](https://img.shields.io/github/repo-size/username/projectname?color=%000000)
-![GitHub watchers](https://img.shields.io/github/watchers/username/projectname?color=%000000)
-![GitHub language count](https://img.shields.io/github/languages/count/username/projectname?color=%000000)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/username/projectname?color=%000000)
+![GitHub repo size](https://img.shields.io/github/repo-size/NoSleepTillLambos/ChitChat?color=%000000)
+![GitHub watchers](https://img.shields.io/github/watchers/NoSleepTillLambos/ChitChat?color=%000000)
+![GitHub language count](https://img.shields.io/github/languages/count/NoSleepTillLambos/ChitChat?color=%000000)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/NoSleepTillLambos/ChitChat?color=%000000)
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![Instagram][instagram-shield]][instagram-url]
 [![Behance][behance-shield]][behance-url]
@@ -127,17 +127,17 @@ Run the following in the command-line to install all the required dependencies:
 ![image2][image2]
 ### Feature 1
 
-Description of Feature
+Users can create an account seperate from others and create personal experiences with other users of the app 
 
 ![image3][image3]
 ### Feature 2
 
-Description of Feature
+Users can create chats and talk to friends and loved ones through the use of a phone number
 
 ![image4][image4]
 ### Feature 3
 
-Description of Feature
+Users are able to type and send messages live, allowign for real time chat and quickfire connection to the database
 
 ![image5][image5]
 
@@ -146,7 +146,7 @@ Description of Feature
 <!-- Briefly explain your concept ideation process -->
 ## Concept Process
 
-The `Conceptual Process` is the set of actions, activities and research that was done when starting this project.
+The concept was obviously largely around whatsapp, that formed a large part of the ideation for me and helped me gauge where i wanted certain features to be and where i wanted everythign to be lined up
 
 ### Ideation
 
@@ -171,42 +171,32 @@ The `Development Process` is the technical implementations and functionality don
 <!-- stipulate all of the functionality you included in the project -->
 
 * Made use of Hilt for dependency injection for Firebase and database calls.
-* `MVC/MVVM` design architecture implemented.
-* `Plugin` for this.
-* ETC.
+* Firebase for backend control and storage of data and images
+
 
 #### Highlights
 <!-- stipulated the highlight you experienced with the project -->
 * The biggest highlight was getting the chat features working.
-* Rainbows.
+* Getting the chat working meant i had the main features under control and could go from there, it was the core of the app so it made me the most <br/>
+when i got it working!
 
 #### Challenges
 <!-- stipulated the challenges you faced with the project and why you think you faced it or how you think you'll solve it (if not solved) -->
-* Bugs.
-* Bugs.
-
-### Reviews & Testing
-<!-- stipulate how you've conducted testing in the form of peer reviews, feedback and also functionality testing, like unit tests (if applicable) -->
+* The biggest bug was with Firebase and android studio, i found it a little difficult regarding connection and working with the database 
+* The Android Emulator has always been the biggest struggle for me, it slows down my laptop astronomically, luckily i was able to use a friends mac whcich solved the issue
 
 #### Feedback from Reviews
 
 `Peer Reviews` were conducted by my fellow students and lecturer. The following feedback I found useful:
 
-* Feedback one.
-* Feedback two.
-
-#### Unit Tests
-
-`Unit Tests` were conducted to establish working functionality. Here are all the tests that were ran:
-
-* Test 1 of this functionality
-* Test 2 of this functionality
+* I started off using the old xml files becuase they made more sense to me but after spending some time with Jetpack compose it proved to be so much simpler
+of this functionality
 
 ### Future Implementation
 <!-- stipulate functionality and improvements that can be implemented in the future. -->
 
-* Future 1.
-* Future 2.
+* In the future i would like to add the ability to send images 
+* Create statuses and be able to comment on them 
 
 <!-- MOCKUPS -->
 ## Final Outcome
@@ -227,7 +217,7 @@ To see a run through of the application, click below:
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/username/projectname/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/NoSleepTillLambos/ChitChat/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -243,7 +233,7 @@ Contributions are what makes the open-source community such an amazing place to 
 <!-- AUTHORS -->
 ## Authors
 
-* **Your Name & Surname** - [username](https://github.com/username)
+* **Liam Wedge** - [username](https://github.com/NoSleepTillLambos)
 
 <!-- LICENSE -->
 ## License
@@ -253,8 +243,8 @@ Distributed under the MIT License. See `LICENSE` for more information.\
 <!-- LICENSE -->
 ## Contact
 
-* **Your Name & Surname** - [email@address](mailto:email@address) - [@instagram_handle](https://www.instagram.com/instagram_handle/) 
-* **Project Link** - https://github.com/username/projectname
+* **Liam Wedge** - [liamwedge00l@gmail.com](mailto:email@address) - [@instagram_handle](https://www.instagram.com/liam.portfolio/) 
+* **Project Link** - https://github.com/NpSleepTillLambos/ChitChat
 
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
@@ -268,9 +258,9 @@ Distributed under the MIT License. See `LICENSE` for more information.\
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [image1]: app/src/main/res/drawable/chats.png
-[image2]: /path/to/image.png
-[image3]: /path/to/image.png
-[image4]: /path/to/image.png
+[image2]: app/src/main/res/drawable/Screenshot_20230621_222816.png
+[image3]: app/src/main/res/drawable/Screenshot_20230621_223033.png
+[image4]: app/src/main/res/drawable/Screenshot_20230621_223053.png
 [image5]: /path/to/image.png
 [image6]: /path/to/image.png
 [image7]: /path/to/image.png
