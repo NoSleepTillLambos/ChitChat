@@ -22,10 +22,10 @@
     <img src="https://github.com/NoSleepTillLambos/ChitChat/blob/master/app/src/main/res/drawable/logo.png" alt="Logo" width="140" height="140">
   </a>
   
-  <h3 align="center">Project Name</h3>
+  <h3 align="center">ChitChat</h3>
 
   <p align="center">
-    Short Project Slogan / Description <br>
+    A messaging app created using Kotlin, Android Studio and Google Firebase<br>
       <a href="https://github.com/username/projectname"><strong>Explore the docs »</strong></a>
    <br />
    <br />
