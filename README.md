@@ -170,14 +170,14 @@ The `Development Process` is the technical implementations and functionality don
 ### Implementation Process
 <!-- stipulate all of the functionality you included in the project -->
 
-* Made use of both `functionality` to implement a specific feature.
+* Made use of Hilt for dependency injection for Firebase and database calls.
 * `MVC/MVVM` design architecture implemented.
 * `Plugin` for this.
 * ETC.
 
 #### Highlights
 <!-- stipulated the highlight you experienced with the project -->
-* Sunshine.
+* The biggest highlight was getting the chat features working.
 * Rainbows.
 
 #### Challenges
