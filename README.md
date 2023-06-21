@@ -234,11 +234,10 @@ Distributed under the MIT License. See `LICENSE` for more information.\
 <!-- ACKNOWLEDGEMENTS -->
 ## Acknowledgements
 <!-- all resources that you used and Acknowledgements here -->
-* [Hilt][(path/to/resource)](https://dagger.dev/hilt/)
-* [Dagger][(path/to/resource)](https://dagger.dev/hilt/)
-* [Resource Name](path/to/resource)
-* [Resource Name](path/to/resource)
-* [Resource Name](path/to/resource)
+* [Hilt](https://dagger.dev/hilt/)
+* [Dagger](https://dagger.dev/hilt/)
+* [Android Studio]https://developer.android.com/studio?gclid=CjwKCAjwv8qkBhAnEiwAkY-ahgEAbMyYvSFARfS4rPjVIaElj6u95c6p2qIG-XUJ3rqfL8gj6zo6zBoCzegQAvD_BwE&gclsrc=aw.ds
+* [Firebase]https://firebase.google.com/
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
