@@ -78,9 +78,9 @@ A nice introduction to this amazing project of mine.
 
 ### Built With
 
-* [Technology Name](path/to/technology/website)
-* [Technology Name](path/to/technology/website)
-* [Technology Name](path/to/technology/website)
+* [Hilt](https://dagger.dev/hilt/)
+* [Firebase](https://firebase.google.com/)
+* [Android Studio](https://developer.android.com/studio)
 
 <!-- GETTING STARTED -->
 <!-- Make sure to add appropriate information about what prerequesite technologies the user would need and also the steps to install your project on their own mashines -->
