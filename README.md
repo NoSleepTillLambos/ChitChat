@@ -267,7 +267,7 @@ Distributed under the MIT License. See `LICENSE` for more information.\
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[image1]: /path/to/image.png
+[image1]: app/src/main/res/drawable/chats.png
 [image2]: /path/to/image.png
 [image3]: /path/to/image.png
 [image4]: /path/to/image.png
@@ -275,8 +275,8 @@ Distributed under the MIT License. See `LICENSE` for more information.\
 [image6]: /path/to/image.png
 [image7]: /path/to/image.png
 [image8]: /path/to/image.png
-[image9]: /path/to/image.png
-[image10]: /path/to/image.png
+[image9]: app/src/main/res/drawable/807.png
+[image10]: app/src/main/res/drawable/P6YSJM1.png
 
 
 <!-- Refer to https://shields.io/ for more information and options about the shield links at the top of the ReadMe file -->
