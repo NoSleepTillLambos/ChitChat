@@ -117,9 +117,10 @@ fun Messages(modifier: Modifier, chatMessages: List<Message>, currentUserId: Str
             msg.message?.let {
                 val alignment = if (msg.sentBy == currentUserId) Alignment.End
                 else Alignment.Start
-                val color = if (msg.sentBy == currentUserId) Color(0xFF68C400)
-                else Color(0xFFC0C0C0)
+                val color = if (msg.sentBy == currentUserId) Color(0xFFF7CF4A)
+                else Color(0xFFF93B6D9)
 
+                /*0xF7C4A*/
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()

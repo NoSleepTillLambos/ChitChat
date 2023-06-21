@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.chitchat.BottomNavigationItem
@@ -195,12 +196,15 @@ fun ProfileImage(imageUrl: String?, vm: CAViewModel) {
             Card(shape = CircleShape,
             modifier = Modifier
                 .padding(8.dp)
-                .size(100.dp))
+                .size(70.dp))
             {
                 Image(data = imageUrl)
             }
             
-            Text(text = "Change your profile picture")
+            Text(text = "Change your profile picture",
+            modifier = Modifier.padding(10.dp),
+            fontWeight = FontWeight.Bold
+            )
         }
 
         val isLoading = vm.isInProgress.value

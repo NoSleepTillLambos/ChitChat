@@ -1,6 +1,10 @@
 package com.example.chitchat.screens
 
 
+import android.os.Build
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -48,20 +53,28 @@ fun LoginScreen(
     modifier: Modifier = Modifier
 ) {
 
-    checkIfSignedIn(vm = vm , navController = navController)
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = {
+            Log.d(" AA check ", it.toString())
+        })
+
+    checkIfSignedIn(vm = vm, navController = navController)
     Box(modifier = modifier.fillMaxSize()) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .wrapContentHeight()
-            .verticalScroll(
-                rememberScrollState()
-            ),
-            horizontalAlignment = Alignment.CenterHorizontally)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .wrapContentHeight()
+                .verticalScroll(
+                    rememberScrollState()
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        )
         {
             val emailState = remember { mutableStateOf(TextFieldValue()) }
             val passwordState = remember { mutableStateOf(TextFieldValue()) }
 
-            val focus  = LocalFocusManager.current
+            val focus = LocalFocusManager.current
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = null,
@@ -72,16 +85,18 @@ fun LoginScreen(
             )
             Text(text = "Login", modifier = Modifier.padding(8.dp), fontSize = 18.sp)
 
-            OutlinedTextField(value = emailState.value,
-                onValueChange = {emailState.value = it},
+            OutlinedTextField(
+                value = emailState.value,
+                onValueChange = { emailState.value = it },
                 modifier.padding(9.dp),
                 label = { Text(text = "Email") },
                 trailingIcon = {
                     Icon(imageVector = Icons.Default.Email, contentDescription = null)
                 },
             )
-            OutlinedTextField(value = passwordState.value,
-                onValueChange = {passwordState.value = it},
+            OutlinedTextField(
+                value = passwordState.value,
+                onValueChange = { passwordState.value = it },
                 modifier.padding(9.dp),
                 label = { Text(text = "Password") },
                 trailingIcon = {
@@ -90,13 +105,16 @@ fun LoginScreen(
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            Button(onClick = {
-                focus.clearFocus(force = true)
-                vm.login(
-                    emailState.value.text,
-                    passwordState.value.text)
-            },
-                modifier = Modifier.padding(8.dp)) {
+            Button(
+                onClick = {
+                    focus.clearFocus(force = true)
+                    vm.login(
+                        emailState.value.text,
+                        passwordState.value.text
+                    )
+                },
+                modifier = Modifier.padding(8.dp)
+            ) {
                 Text(text = "Login here")
             }
 
@@ -115,6 +133,14 @@ fun LoginScreen(
         if (isLoading)
             ProgressSpinner()
 
+
+        // LAUNCHING NOTIFICATION
+        LaunchedEffect(key1 = permissionLauncher) {
+            Log.d("AA launche", "YES! WE HAVE LAUNCHED")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                permissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
 
     }
 }

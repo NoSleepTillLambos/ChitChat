@@ -26,12 +26,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.chitchat.BottomNavigationItem
 import com.example.chitchat.CAViewModel
@@ -45,14 +47,7 @@ import com.example.chitchat.navigateTo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConversationsPage(navController: NavController, vm: CAViewModel) {
-    /*var name by rememberSaveable { mutableStateOf(userData?.name ?: "") }
-    var number by rememberSaveable { mutableStateOf(userData?.number ?: "") }
 
-
-    Text(text = "$name" + "'s Chats")*/
-    Row() {
-        Text(text = "Chats")
-    }
     val inProgress = vm.chatsInProgress.value
     if (inProgress)
         ProgressSpinner()
@@ -85,6 +80,14 @@ fun ConversationsPage(navController: NavController, vm: CAViewModel) {
                         .padding(it)
                 )
                 {
+                    Text(
+                        text = "Chats",
+                        fontWeight = FontWeight.Bold, fontSize = 30.sp,
+                        modifier = Modifier
+                            .align(CenterHorizontally)
+                            .padding(4.dp),
+                        color = Color( 0xFFF93B6D9)
+                    )
                     Divider()
                     if (chats.isEmpty())
                         Column(
@@ -170,7 +173,7 @@ fun FAB(
         )
     FloatingActionButton(
         onClick = onClick,
-        containerColor = MaterialTheme.colorScheme.secondary,
+        containerColor = MaterialTheme.colorScheme.primary,
         shape = CircleShape,
         contentColor = Color.White,
         modifier = Modifier.padding(40.dp)

@@ -31,6 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -77,7 +78,7 @@ fun RegisterScreen(
                     .padding(top = 16.dp)
                     .padding(8.dp)
             )
-            Text(text = "Sign up below", modifier = Modifier.padding(8.dp), fontSize = 18.sp, fontFamily = FontFamily.Serif)
+            Text(text = "Sign up", modifier = Modifier.padding(8.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
             OutlinedTextField(value = nameState.value,
                 onValueChange = {nameState.value = it},

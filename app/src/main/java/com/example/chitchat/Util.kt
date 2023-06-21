@@ -103,7 +103,6 @@ fun RowCommon(imageUrl: String?, name: String?, onItemClick: () -> Unit) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .height(90.dp)
-        .background(Color.LightGray)
         .clickable { onItemClick.invoke() },
         verticalAlignment = Alignment.CenterVertically)
     {

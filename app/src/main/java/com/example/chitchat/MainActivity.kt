@@ -1,6 +1,7 @@
 package com.example.chitchat
 
 import IndividualChat
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,6 +20,7 @@ import com.example.chitchat.screens.ProfileScreen
 import com.example.chitchat.screens.RegisterScreen
 import com.example.chitchat.screens.SingleStatus
 import com.example.chitchat.screens.StatusScreen
+import com.example.chitchat.services.BackgroundService
 import com.example.chitchat.ui.theme.ChitChatTheme
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,7 +56,16 @@ class MainActivity : ComponentActivity() {
                     ChitChatNavigation()
                 }
             }
+
         }
+        val serviceIntent = Intent(
+        this,
+        BackgroundService::class.java
+        )
+
+
+        // launch listener
+        startService(serviceIntent)
 
 
     }
