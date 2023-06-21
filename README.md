@@ -19,7 +19,7 @@
 <p align="center">
 
   <a href="https://github.com/username/projectname">
-    <img src="path/to/logo" alt="Logo" width="140" height="140">
+    <img src="[path/to/logo](https://github.com/NoSleepTillLambos/ChitChat/blob/master/app/src/main/res/drawable/logo.png)" alt="Logo" width="140" height="140">
   </a>
   
   <h3 align="center">Project Name</h3>
