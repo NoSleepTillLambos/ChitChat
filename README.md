@@ -3,10 +3,6 @@
 <!-- Repository Information & Links-->
 <br />
 
-![GitHub repo size](https://img.shields.io/github/repo-size/NoSleepTillLambos/ChitChat?color=%000000)
-![GitHub watchers](https://img.shields.io/github/watchers/NoSleepTillLambos/ChitChat?color=%000000)
-![GitHub language count](https://img.shields.io/github/languages/count/NoSleepTillLambos/ChitChat?color=%000000)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/NoSleepTillLambos/ChitChat?color=%000000)
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![Instagram][instagram-shield]][instagram-url]
 [![Behance][behance-shield]][behance-url]
