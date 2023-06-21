@@ -9,16 +9,20 @@ import com.example.chitchat.data.CHAT_COLLECTION
 import com.example.chitchat.data.ChatData
 import com.example.chitchat.data.ChatUser
 import com.example.chitchat.data.Events
+import com.example.chitchat.data.MESSAGE_COLLECTION
+import com.example.chitchat.data.Message
 import com.example.chitchat.data.USER_IN_COLLECTION
 import com.example.chitchat.data.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Exception
+import java.util.Calendar
 import java.util.UUID
 import javax.inject.Inject
 
@@ -27,7 +31,7 @@ class CAViewModel @Inject constructor(
     val auth: FirebaseAuth,
     val db: FirebaseFirestore,
     val storage: FirebaseStorage
-)  : ViewModel() {
+) : ViewModel() {
 
     val isInProgress = mutableStateOf(false)
     val popUpNotify = mutableStateOf<Events<String>?>(null)
@@ -37,18 +41,25 @@ class CAViewModel @Inject constructor(
 
     val chats = mutableStateOf<List<ChatData>>(listOf())
     val chatsInProgress = mutableStateOf(false)
+
+    val chatMessages = mutableStateOf<List<Message>>(listOf())
+    val inProgressChatMessages = mutableStateOf(false)
+
+    // listening for changes in the chat and populating thereafter
+    var currentChatMessagesListener: ListenerRegistration? = null
+
     init {
         logOut()
         auth.signOut()
         val currentLoggedInUser = auth.currentUser
         isSignedIn.value = currentLoggedInUser != null
-        currentLoggedInUser?.uid?.let {uid ->
+        currentLoggedInUser?.uid?.let { uid ->
             getUserData(uid)
         }
     }
 
     fun signUp(name: String, number: String, email: String, password: String) {
-        if (name.isEmpty() or number.isEmpty() or email.isEmpty() or password.isEmpty()){
+        if (name.isEmpty() or number.isEmpty() or email.isEmpty() or password.isEmpty()) {
             handleException(customMessage = "All fields must be filled in")
             return
         }
@@ -57,18 +68,18 @@ class CAViewModel @Inject constructor(
             .get()
             .addOnSuccessListener {
                 if (it.isEmpty)
-                    auth.createUserWithEmailAndPassword(email,password)
-                        .addOnCompleteListener {
-                            task -> if (task.isSuccessful) {
+                    auth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
                                 isSignedIn.value = true
-                            createOrUpdateProfile(name = name,number = number)
-                            // creating the user here
+                                createOrUpdateProfile(name = name, number = number)
+                                // creating the user here
                             } else
                                 handleException(task.exception, "Something went wrong...")
 
                         }
                 else
-                        handleException(customMessage = "Oops!, that Number already exists")
+                    handleException(customMessage = "Oops!, that Number already exists")
                 isInProgress.value = false
 
             }
@@ -78,13 +89,13 @@ class CAViewModel @Inject constructor(
     }
 
     fun login(email: String, password: String) {
-        if(email.isEmpty() or password.isEmpty()) {
+        if (email.isEmpty() or password.isEmpty()) {
             handleException(customMessage = "All fields must be filled in")
             return
 
         }
         isInProgress.value = true
-        auth.signInWithEmailAndPassword(email,password)
+        auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     isSignedIn.value = true
@@ -92,9 +103,11 @@ class CAViewModel @Inject constructor(
                     auth.currentUser?.uid?.let {
                         getUserData(it)
                     }
-                }
-                else
-                    handleException(task.exception, "There was an issue with your email and password, please try again")
+                } else
+                    handleException(
+                        task.exception,
+                        "There was an issue with your email and password, please try again"
+                    )
 
             }
             .addOnFailureListener {
@@ -153,7 +166,7 @@ class CAViewModel @Inject constructor(
             .addSnapshotListener { value, error ->
                 if (error != null)
                     handleException(error, "There has been a problem fetching the user")
-                if (value != null ) {
+                if (value != null) {
                     val user = value.toObject<UserData>()
                     userData.value = user
                     isInProgress.value = false
@@ -173,7 +186,7 @@ class CAViewModel @Inject constructor(
     private fun handleException(exception: Exception? = null, customMessage: String = "") {
         Log.e("Chitchat", " chat except", exception)
         exception?.printStackTrace()
-        val errorMsg = exception?.localizedMessage?: ""
+        val errorMsg = exception?.localizedMessage ?: ""
         val message = if (customMessage.isEmpty()) errorMsg else "$customMessage : $errorMsg"
         popUpNotify.value = Events(message)
         isInProgress.value = false
@@ -199,6 +212,7 @@ class CAViewModel @Inject constructor(
                 handleException(it)
             }
     }
+
     fun uploadProfileImage(uri: Uri) {
         uploadingImage(uri) {
             createOrUpdateProfile(imageUrl = it.toString())
@@ -214,7 +228,7 @@ class CAViewModel @Inject constructor(
                 .where(
                     Filter.or(
                         Filter.and(
-                            Filter.equalTo("user1.number",number),
+                            Filter.equalTo("user1.number", number),
                             Filter.equalTo("user2.number", userData.value?.number)
                         ),
                         Filter.and(
@@ -225,11 +239,11 @@ class CAViewModel @Inject constructor(
                 )
                 .get()
                 .addOnSuccessListener {
-                    if(it.isEmpty) {
+                    if (it.isEmpty) {
                         db.collection(USER_IN_COLLECTION).whereEqualTo("number", number)
                             .get()
                             .addOnSuccessListener {
-                                if(it.isEmpty)
+                                if (it.isEmpty)
                                     handleException(customMessage = "Cannot find $number")
                                 else {
                                     val chatPartner = it.toObjects<UserData>()[0]
@@ -271,12 +285,48 @@ class CAViewModel @Inject constructor(
             )
         )
             .addSnapshotListener { value, error ->
-                if(error != null)
+                if (error != null)
                     handleException(error)
                 if (value != null)
                     chats.value = value.documents.mapNotNull { it.toObject<ChatData>() }
                 isInProgress.value = false
             }
     }
+
+    fun onSendReply(chatId: String, message: String) {
+
+        // get timestamp
+        val time = Calendar.getInstance().time.toString()
+        val message = Message(userData.value?.userId, message, time)
+
+        db.collection(CHAT_COLLECTION)
+            .document(chatId)
+            .collection(MESSAGE_COLLECTION)
+            .document()
+            .set(message)
+
+    }
+
+    fun populateChat(chatId: String) {
+        inProgressChatMessages.value = true
+        currentChatMessagesListener = db.collection(CHAT_COLLECTION)
+            .document(chatId)
+            .collection(MESSAGE_COLLECTION)
+            .addSnapshotListener { value, error ->
+                if (error != null)
+                    handleException(error)
+                if (value != null)
+                    chatMessages.value = value.documents
+                        .mapNotNull { it.toObject<Message>() }
+                        .sortedBy { it.timestamp }
+                inProgressChatMessages.value = false
+            }
+    }
+
+    fun depopulateChat() {
+        currentChatMessagesListener = null
+        chatMessages.value = listOf()
+    }
+
 
 }

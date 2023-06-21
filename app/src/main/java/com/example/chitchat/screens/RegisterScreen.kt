@@ -150,7 +150,7 @@ fun RegisterScreen(
 @Preview (showSystemUi = true)
 @Composable
 fun PreviewRegisterScreen() {
-    ChitChatTheme() {
+    ChitChatTheme {
 
     }
 }

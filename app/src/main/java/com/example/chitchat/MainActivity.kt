@@ -1,5 +1,6 @@
 package com.example.chitchat
 
+import IndividualChat
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,7 +14,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.chitchat.screens.ConversationsPage
-import com.example.chitchat.screens.IndividualChat
 import com.example.chitchat.screens.LoginScreen
 import com.example.chitchat.screens.ProfileScreen
 import com.example.chitchat.screens.RegisterScreen
@@ -28,14 +28,16 @@ sealed class DestinationScreen(val route: String) {
     object Login : DestinationScreen("login")
     object Profile : DestinationScreen("profile")
     object ConversationPage : DestinationScreen("conversationPage")
-    object IndividualChat: DestinationScreen("individualChat/{chatId}") {
+    object IndividualChat : DestinationScreen("individualChat/{chatId}") {
         fun createRoute(id: String) = "individualChat/$id"
     }
+
     object StatusScreen : DestinationScreen("statusScreen")
     object SingleStatus : DestinationScreen("singleStatus/{statusId}") {
         fun createRoute(id: String) = "singleStatus/$id"
     }
 }
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -45,13 +47,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             ChitChatTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(),
-                color= MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     ChitChatNavigation()
                 }
             }
         }
-        
+
 
     }
 }
@@ -60,10 +64,13 @@ class MainActivity : ComponentActivity() {
 fun ChitChatNavigation() {
     val navController = rememberNavController()
     val vm = hiltViewModel<CAViewModel>()
-    
+
     notificationMessage(vm = vm)
-    
-    NavHost(navController = navController, startDestination = DestinationScreen.RegisterScreen.route) {
+
+    NavHost(
+        navController = navController,
+        startDestination = DestinationScreen.RegisterScreen.route
+    ) {
         composable(DestinationScreen.RegisterScreen.route) {
             RegisterScreen(navController, vm)
         }
@@ -83,7 +90,13 @@ fun ChitChatNavigation() {
             ConversationsPage(navController = navController, vm = vm)
         }
         composable(DestinationScreen.IndividualChat.route) {
-            IndividualChat(chatId = "123")
+            val chatId = it.arguments?.getString("chatId")
+            chatId?.let {
+                IndividualChat(
+                    navController = navController,
+                    vm = vm,
+                    chatId = it)
+            }
         }
     }
 }

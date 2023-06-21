@@ -103,19 +103,21 @@ fun RowCommon(imageUrl: String?, name: String?, onItemClick: () -> Unit) {
     Row(modifier = Modifier
         .fillMaxWidth()
         .height(90.dp)
+        .background(Color.LightGray)
         .clickable { onItemClick.invoke() },
         verticalAlignment = Alignment.CenterVertically)
     {
         Image(
             data = imageUrl,
             modifier = Modifier.padding(10.dp)
-                .size(50.dp)
+                .size(70.dp)
                 .clip(CircleShape)
                 .background(Color.Black)
         )
-        Text(text = name ?: "----",
+        Text(text = name ?: "--",
         fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 6.dp)
         )
+
     }
 }
